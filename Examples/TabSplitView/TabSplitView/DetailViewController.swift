@@ -37,14 +37,14 @@ class DetailViewController: UIViewController {
         
         if let navigationCtr = self.navigationController {
             navigationCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
-            navigationCtr.navigationBar.tintColor = .whiteColor()
+            navigationCtr.navigationBar.tintColor = .white
             
             navigationCtr.navigationBar.titleTextAttributes = [
-                NSForegroundColorAttributeName : UIColor.whiteColor()
+                NSForegroundColorAttributeName : UIColor.white
             ]
             
-            if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-                let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "closeBtnPressed")
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DetailViewController.closeBtnPressed))
                 self.navigationItem.leftBarButtonItem = closeButton
             }
         }
@@ -55,7 +55,7 @@ class DetailViewController: UIViewController {
     }
     
     func closeBtnPressed() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

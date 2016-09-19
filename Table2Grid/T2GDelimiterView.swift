@@ -23,21 +23,21 @@ class T2GDelimiterView: UIView {
     convenience init(frame: CGRect, title: String) {
         self.init(frame: frame)
         
-        self.backgroundColor = .darkGrayColor()
+        self.backgroundColor = .darkGray
         
         self.titleLabel = UILabel()
-        self.titleLabel!.font = UIFont.boldSystemFontOfSize(15)
-        self.titleLabel!.textColor = .whiteColor()
+        self.titleLabel!.font = UIFont.boldSystemFont(ofSize: 15)
+        self.titleLabel!.textColor = .white
         self.titleLabel!.text = title
         self.addSubview(self.titleLabel!)
         
         self.titleLabel!.translatesAutoresizingMaskIntoConstraints = false
-        let views = ["background": self, "button": self.titleLabel!]
+        let views = ["background": self, "button": self.titleLabel!] as [String : Any]
         
-        let constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let constH = NSLayoutConstraint.constraints(withVisualFormat: "H:|[button]|", options: .alignAllCenterY, metrics: nil, views: views)
         self.addConstraints(constH)
         
-        let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        let constW = NSLayoutConstraint.constraints(withVisualFormat: "V:|[button]|", options: .alignAllCenterX, metrics: nil, views: views)
         self.addConstraints(constW)
     }
     
@@ -47,12 +47,12 @@ class T2GDelimiterView: UIView {
     - parameter frame: Bounds for the text used for the calculation.
     - returns: Max size of system font.
     */
-    private func fontSize(frame: CGRect) -> CGFloat {
+    fileprivate func fontSize(_ frame: CGRect) -> CGFloat {
         let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        let dummyFont = UIFont.systemFontOfSize(12)
+        let dummyFont = UIFont.systemFont(ofSize: 12)
         
-        let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
-        let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))
+        let size = dummyString.size(attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
+        let adjustedSize: CGSize = CGSize(width: CGFloat(ceilf(Float(size.width))), height: CGFloat(ceilf(Float(size.height))))
         
         let pointsPerPixel = dummyFont.pointSize / adjustedSize.height
         return frame.size.height * pointsPerPixel

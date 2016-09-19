@@ -17,7 +17,7 @@ class MasterViewController: T2GTabBarViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
         }
     }
@@ -26,8 +26,8 @@ class MasterViewController: T2GTabBarViewController {
         super.viewDidLoad()
         
         self.sliderColor = UIColor(red: CGFloat(252.0/255.0), green: CGFloat(112.0/255.0), blue: CGFloat(87.0/255.0), alpha: 1.0)
-        self.tabBar.translucent = false
-        self.tabBar.backgroundColor = .whiteColor()
+        self.tabBar.isTranslucent = false
+        self.tabBar.backgroundColor = .white
         self.tabBar.selectedImageTintColor = UIColor(red: CGFloat(252.0/255.0), green: CGFloat(112.0/255.0), blue: CGFloat(87.0/255.0), alpha: 1.0)
         
         if let split = self.splitViewController {
@@ -42,11 +42,11 @@ class MasterViewController: T2GTabBarViewController {
     
     // MARK: - Segues
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
-            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-            controller.detailItem = NSDate()
-            controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+            let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
+            controller.detailItem = Date() as AnyObject?
+            controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
             controller.navigationItem.leftItemsSupplementBackButton = true
         }
     }

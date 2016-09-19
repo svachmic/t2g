@@ -12,7 +12,7 @@ import UIKit
 Base class for checkbox in editing mode (can be overriden).
 */
 class T2GCheckboxButton: UIButton {
-    let strokeColor = UIColor(named: .PYDOrange)
+    let strokeColor = UIColor(named: .pydOrange)
     var wasSelected: Bool = false {
         didSet {
             self.setNeedsDisplay()
@@ -24,16 +24,25 @@ class T2GCheckboxButton: UIButton {
     
     - parameter rect: Default Cocoa API - The portion of the view’s bounds that needs to be updated.
     */
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let lineWidth: CGFloat = self.wasSelected ? 4.0 : 3.0
-        let fillColor = self.wasSelected ? UIColor.blackColor().CGColor : UIColor.clearColor().CGColor
+        let fillColor = self.wasSelected ? UIColor.black.cgColor : UIColor.clear.cgColor
         
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetLineWidth(context, lineWidth)
-        CGContextAddArc(context, frame.size.width / 2, frame.size.height / 2, (frame.size.width - 10)/2, 0.0, CGFloat(M_PI * 2.0), 1)
-        CGContextSetFillColorWithColor(context, fillColor)
-        CGContextSetStrokeColorWithColor(context, self.strokeColor.CGColor)
-        CGContextDrawPath(context, CGPathDrawingMode.FillStroke)
+        context?.setLineWidth(lineWidth)
+        //CGContextAddArc(context, frame.size.width / 2, frame.size.height / 2, (frame.size.width - 10)/2, 0.0, CGFloat(M_PI * 2.0), 1)
+        
+        context?.addArc(
+            center: CGPoint(x: frame.size.width / 2, y: frame.size.height / 2),
+            radius: (frame.size.width - 10)/2,
+            startAngle: 0,
+            endAngle: .pi * 2,
+            clockwise: true
+        )
+        
+        context?.setFillColor(fillColor)
+        context?.setStrokeColor(self.strokeColor.cgColor)
+        context?.drawPath(using: CGPathDrawingMode.fillStroke)
     }
     
     /**
@@ -43,7 +52,7 @@ class T2GCheckboxButton: UIButton {
     */
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
     
     required init?(coder aDecoder: NSCoder) {

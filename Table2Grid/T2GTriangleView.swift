@@ -16,10 +16,10 @@ class T2GTriangleView: UIView {
     /// overridden property to be able to distribute the change to the fill of the layer
     override var backgroundColor: UIColor? {
         get {
-            return UIColor(CGColor: shapeLayer.fillColor!)
+            return UIColor(cgColor: shapeLayer.fillColor!)
         }
         set {
-            shapeLayer.fillColor = newValue!.CGColor
+            shapeLayer.fillColor = newValue!.cgColor
         }
     }
     
@@ -33,7 +33,7 @@ class T2GTriangleView: UIView {
     
     - returns: Default Cocoa API - The class used to create the view’s Core Animation layer.
     */
-    override class func layerClass() -> AnyClass {
+    override class var layerClass : AnyClass {
         return TriangleLayer.self
     }
     
@@ -44,7 +44,7 @@ class T2GTriangleView: UIView {
     class TriangleLayer: CAShapeLayer {
         override var bounds: CGRect {
             didSet {
-                path = self.shapeForBounds(bounds).CGPath
+                path = self.shapeForBounds(bounds).cgPath
             }
         }
         
@@ -54,16 +54,16 @@ class T2GTriangleView: UIView {
         - parameter rect: CGRect object to define the bounds where the triangle path should be drawn.
         - returns: UIBezierPath defining the path of the triangle.
         */
-        func shapeForBounds(rect: CGRect) -> UIBezierPath {
-            let point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))
-            let point2 = CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect))
-            let point3 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))
+        func shapeForBounds(_ rect: CGRect) -> UIBezierPath {
+            let point1 = CGPoint(x: rect.minX, y: rect.minY)
+            let point2 = CGPoint(x: rect.midX, y: rect.maxY)
+            let point3 = CGPoint(x: rect.maxX, y: rect.minY)
             
             let triangle = UIBezierPath()
-            triangle.moveToPoint(point1)
-            triangle.addLineToPoint(point2)
-            triangle.addLineToPoint(point3)
-            triangle.closePath()
+            triangle.move(to: point1)
+            triangle.addLine(to: point2)
+            triangle.addLine(to: point3)
+            triangle.close()
             return triangle
         }
         
@@ -73,18 +73,18 @@ class T2GTriangleView: UIView {
         - parameter anim: Default Cocoa API - The animation to be added to the render tree.
         - parameter key: Default Cocoa API - A string that identifies the animation.
         */
-        override func addAnimation(anim: CAAnimation, forKey key: String?) {
-            super.addAnimation(anim, forKey: key)
+        override func add(_ anim: CAAnimation, forKey key: String?) {
+            super.add(anim, forKey: key)
             
-            if (anim.isKindOfClass(CABasicAnimation.self)) {
+            if (anim.isKind(of: CABasicAnimation.self)) {
                 let basicAnimation = anim as! CABasicAnimation
                 if (basicAnimation.keyPath == "bounds.size") {
                     let pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
                     pathAnimation.keyPath = "path"
                     pathAnimation.fromValue = self.path
-                    pathAnimation.toValue = self.shapeForBounds(self.bounds).CGPath
-                    self.removeAnimationForKey("path")
-                    self.addAnimation(pathAnimation,forKey: "path")
+                    pathAnimation.toValue = self.shapeForBounds(self.bounds).cgPath
+                    self.removeAnimation(forKey: "path")
+                    self.add(pathAnimation,forKey: "path")
                 }
             }
         }

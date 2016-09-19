@@ -22,5 +22,5 @@ struct T2GViewTags {
     static let cellDrawerButtonConstant = 555555
     static let cellBackgroundButton = 444444
     static let statusBarBackgroundView = 333333
-    static let refreshControl = 222222
+    static let customRefreshControl = 222222
 }

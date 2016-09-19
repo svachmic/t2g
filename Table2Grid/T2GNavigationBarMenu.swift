@@ -29,14 +29,14 @@ Protocol for T2GNavigationBarMenu items' appearance and for handling clicking ev
     - parameter size: Size of the whole cell.
     - returns: UIView object that will be put as a subview of the button.
     */
-    func viewForCell(index: Int, size: CGSize) -> UIView
+    func viewForCell(_ index: Int, size: CGSize) -> UIView
     
     /**
     Gets called when a button has been pressed.
     
     - parameter index: Index of the selected button.
     */
-    func didSelectButton(index: Int)
+    func didSelectButton(_ index: Int)
 }
 
 /**
@@ -61,14 +61,14 @@ class T2GNavigationBarMenu: UIView {
         
         for index in 0..<itemCount {
             let y = CGFloat(index) * itemHeight
-            let button = T2GColoredButton(frame: CGRectMake(0, y, frame.size.width, itemHeight))
-            button.normalBackgroundColor = .clearColor()
+            let button = T2GColoredButton(frame: CGRect(x: 0, y: y, width: frame.size.width, height: itemHeight))
+            button.normalBackgroundColor = .clear
             button.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
             button.tag = index
-            button.addTarget(self, action: "buttonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(T2GNavigationBarMenu.buttonClicked(_:)), for: UIControlEvents.touchUpInside)
             if let subview = self.delegate?.viewForCell(button.tag, size: button.frame.size) {
-                subview.userInteractionEnabled = false
-                subview.exclusiveTouch = false
+                subview.isUserInteractionEnabled = false
+                subview.isExclusiveTouch = false
                 button.addSubview(subview)
             }
             self.addSubview(button)
@@ -76,7 +76,7 @@ class T2GNavigationBarMenu: UIView {
             /// separators
             if index + 1 < itemCount {
                 let offset: CGFloat = 30.0
-                let line = UIView(frame: CGRectMake(offset, button.frame.origin.y + button.frame.size.height, button.frame.size.width - offset, 1))
+                let line = UIView(frame: CGRect(x: offset, y: button.frame.origin.y + button.frame.size.height, width: button.frame.size.width - offset, height: 1))
                 line.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
                 self.addSubview(line)
             }
@@ -88,7 +88,7 @@ class T2GNavigationBarMenu: UIView {
     
     - parameter sender: The button on which the action has been called.
     */
-    internal func buttonClicked(sender: T2GColoredButton) {
+    internal func buttonClicked(_ sender: T2GColoredButton) {
         self.delegate?.didSelectButton(sender.tag)
     }
 }

@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 /**
 Custom TabBar Controller implementing sliding strip on tab controller that slides when tab has been changed.
@@ -14,7 +34,7 @@ Custom TabBar Controller implementing sliding strip on tab controller that slide
 class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     /// the sliding strip
     var slidingView: UIView?
-    var sliderColor = UIColor.blackColor()
+    var sliderColor = UIColor.black
 
     /**
     Sets the tab bar delegate to be self.
@@ -45,8 +65,8 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     - parameter size: Default Cocoa API - The new size for the container’s view.
     - parameter coordinator: Default Cocoa API - The transition coordinator object managing the size change.
     */
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animateAlongsideTransition({ (UIViewControllerTransitionCoordinatorContext) -> Void in
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) -> Void in
             if let slider = self.slidingView {
                 slider.frame = self.sliderFrameForIndex(self.selectedIndex, barWidth: size.width)
             }
@@ -66,7 +86,7 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             // rotation done
         })
         
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
     /**
@@ -75,17 +95,17 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     - parameter tabBarController: Default Cocoa API - The tab bar controller containing viewController.
     - parameter viewController: Default Cocoa API - The view controller that the user selected.
     */
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             if let slider = self.slidingView {
                 slider.frame = self.sliderFrameForIndex(self.selectedIndex, barWidth: self.view.frame.size.width)
             }
         })
     }
     
-    func tabBarController(tabBarController: UITabBarController, animationControllerForTransitionFromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        let from = (tabBarController.viewControllers! ).indexOf(fromVC)
-        let to = (tabBarController.viewControllers! ).indexOf(toVC)
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let from = (tabBarController.viewControllers! ).index(of: fromVC)
+        let to = (tabBarController.viewControllers! ).index(of: toVC)
         let animatedTransitioningObject = T2GTabBarTransition(viewSize: fromVC.view.frame.size, isScrollingLeft: to > from)
         
         return animatedTransitioningObject
@@ -98,12 +118,12 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     - parameter barWidth: The width of the bar from which the proportional size is calculated.
     - returns: CGRect frame with all necessary values.
     */
-    func sliderFrameForIndex(index: Int, barWidth: CGFloat) -> CGRect {
+    func sliderFrameForIndex(_ index: Int, barWidth: CGFloat) -> CGRect {
         let totalSliderWidth = barWidth / CGFloat(self.viewControllers!.count)
         let decreasedWidth = totalSliderWidth * CGFloat(0.8)
         let offsetX = (totalSliderWidth - decreasedWidth) / CGFloat(2.0)
         let x = (totalSliderWidth * CGFloat(index)) + offsetX
         
-        return CGRectMake(x, 0.0, decreasedWidth, 3.0)
+        return CGRect(x: x, y: 0.0, width: decreasedWidth, height: 3.0)
     }
 }

@@ -18,11 +18,11 @@ class T2GCellDrawerScrollView: UIScrollView {
     
     - DISCUSSION: referenced from: http://stackoverflow.com/questions/3642547/uibutton-touch-is-delayed-when-in-uiscrollview
     */
-    override func touchesShouldCancelInContentView(view: UIView) -> Bool {
+    override func touchesShouldCancel(in view: UIView) -> Bool {
         if view is T2GColoredButton || view is T2GCellDrawerButton {
             return true
         }
         
-        return  super.touchesShouldCancelInContentView(view)
+        return  super.touchesShouldCancel(in: view)
     }
 }
