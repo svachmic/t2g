@@ -23,7 +23,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             modelArray3.append(index)
         }
         
-        let rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action, target: self.navigationController!, action: "toggleBarMenu")
+        let rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action, target: self.navigationController!, action: #selector(T2GNaviViewController.toggleBarMenuSelector))
         self.navigationItem.rightBarButtonItems = [rightButton_menu]
         
         self.isHidingEnabled = true
@@ -42,13 +42,13 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             let text = self.title!
             let titleWidth = navCtr.navigationBar.frame.size.width * 0.57
             let titleView = T2GNavigationBarTitle(frame: CGRect(x: 0.0, y: 0.0, width: titleWidth, height: 42.0), text: text, shouldHighlightText: true)
-            titleView.addTarget(self.navigationController, action: "showPathPopover:", for: UIControlEvents.touchUpInside)
+            titleView.addTarget(self.navigationController, action: #selector(T2GNaviViewController.showPathPopover(_:)), for: UIControlEvents.touchUpInside)
             
             self.navigationItem.titleView = titleView
         }
         
         self.scrollView.customRefreshControl = UIRefreshControl()
-        self.scrollView.customRefreshControl!.addTarget(self, action: "handlePullToRefresh:", for: UIControlEvents.valueChanged)
+        self.scrollView.customRefreshControl!.addTarget(self, action: #selector(ExampleViewController.handlePullToRefresh(sender:)), for: UIControlEvents.valueChanged)
         self.scrollView.customRefreshControl!.tag = T2GViewTags.customRefreshControl
     }
     

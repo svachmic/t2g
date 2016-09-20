@@ -192,7 +192,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Proxy function of toggleBarMenu(forceClose) for UIBarButtonItem action call.
     */
-    func toggleBarMenu() {
+    func toggleBarMenuSelector() {
         self.toggleBarMenu(false)
     }
     
@@ -221,7 +221,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
             }
             
             if forceClose {
-                dismissClosure()
+                _ = dismissClosure()
             } else {
                 if !dismissClosure() {
                     let statusBarOffset: CGFloat = UIApplication.shared.isStatusBarHidden ? 0 : 20
@@ -359,8 +359,8 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     - returns: Optional closure.
     */
     func completionHandlerAfterRootViewControllerAppears() -> (() -> Void)? {
-        if let vc = self.viewControllers[0] as? UIViewController {
-            return vc.completionHandlerWhenAppeared()
+        if self.viewControllers.count > 0 {
+            return self.viewControllers[0].completionHandlerWhenAppeared()
         }
         
         return nil

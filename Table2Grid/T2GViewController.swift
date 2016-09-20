@@ -329,7 +329,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 self.scrollView.adjustContentSize()
             }, completion: { (_) -> Void in
-                self.insertRowWithTag(totalIndex + T2GViewTags.cellConstant, animated: true)
+                _ = self.insertRowWithTag(totalIndex + T2GViewTags.cellConstant, animated: true)
                 return
             })
         })
@@ -489,7 +489,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             
             
             for index in from...to {
-                self.insertRowWithTag(index)
+                _ = self.insertRowWithTag(index)
             }
             
             return .collection
@@ -553,7 +553,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             let to = (indicesExtremes.highest) + 10
             if (to - T2GViewTags.cellConstant) < self.scrollView.totalCellCount() {
                 for index in from...to {
-                    self.insertRowWithTag(index)
+                    _ = self.insertRowWithTag(index)
                 }
             }
             
@@ -699,7 +699,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         let indices = self.scrollView.indicesForVisibleCells(m)
         for index in indices {
-            self.insertRowWithTag(index + T2GViewTags.cellConstant, animated: true)
+            _ = self.insertRowWithTag(index + T2GViewTags.cellConstant, animated: true)
         }
     }
     
