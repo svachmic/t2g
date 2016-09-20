@@ -129,7 +129,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             count = count > totalCells ? totalCells : count
             
             for index in 0..<count {
-                self.insertRowWithTag(index + T2GViewTags.cellConstant)
+                _ = self.insertRowWithTag(index + T2GViewTags.cellConstant)
             }
             self.scrollView.adjustContentSize()
         }
@@ -154,13 +154,21 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         // View must be added to hierarchy before setting constraints.
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
-        let views = ["view": self.view, "scroll_view": scrollView]
         
-        let constH = NSLayoutConstraint.constraints(withVisualFormat: "H:|[scroll_view]|", options: .alignAllCenterY, metrics: nil, views: views)
-        view.addConstraints(constH)
+        let center = NSLayoutConstraint(item: self.scrollView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+        view.addConstraint(center)
         
-        let constW = NSLayoutConstraint.constraints(withVisualFormat: "V:|[scroll_view]|", options: .alignAllCenterX, metrics: nil, views: views)
-        view.addConstraints(constW)
+        let width = NSLayoutConstraint(item: self.scrollView, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 1, constant: 0)
+        view.addConstraint(width)
+        
+        let height = NSLayoutConstraint(item: self.scrollView, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 1, constant: 0)
+        view.addConstraint(height)
+        
+        let topAlignment = NSLayoutConstraint(item: self.scrollView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
+        view.addConstraint(topAlignment)
+        
+        let bottomAlignment = NSLayoutConstraint(item: self.scrollView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)
+        view.addConstraint(bottomAlignment)
     }
     
     /**
